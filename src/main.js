@@ -1,4 +1,5 @@
 // ===== IMS SPA Router & App Init =====
+import { initAuth, logout } from './pages/auth.js';
 import { renderDashboard } from './pages/dashboard.js';
 import { renderProducts } from './pages/products.js';
 import { renderCategories } from './pages/categories.js';
@@ -95,8 +96,15 @@ export function showToast(message, type = 'success') {
 }
 
 // ===== Init =====
-window.addEventListener('hashchange', navigate);
+window.logout = logout;
+
+window.addEventListener('hashchange', () => {
+  initAuth();
+  navigate();
+});
+
 window.addEventListener('load', () => {
+  initAuth();
   if (!window.location.hash) window.location.hash = '#dashboard';
   navigate();
 });

@@ -12,6 +12,8 @@ import adjustmentsRouter from './routes/adjustments.js';
 import ledgerRouter from './routes/ledger.js';
 import authRouter from './auth.js';
 import dashboardRouter from './routes/dashboard.js';
+import usersRouter from './routes/users.js';
+import settingsRouter from './routes/settings.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -34,6 +36,8 @@ async function start() {
   app.use('/api/ledger', ledgerRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/dashboard', dashboardRouter);
+  app.use('/api/users', usersRouter);
+  app.use('/api/settings', settingsRouter);
 
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });

@@ -27,6 +27,9 @@ async function getDb() {
   // Enable foreign keys
   db.run('PRAGMA foreign_keys = ON');
 
+  // Schema updates for existing databases
+  try { db.run('ALTER TABLE users ADD COLUMN is_validated INTEGER DEFAULT 1'); } catch (e) { /* Ignore if it already exists */ }
+
   // Create tables
   db.run(`
     CREATE TABLE IF NOT EXISTS categories (
@@ -79,7 +82,15 @@ async function getDb() {
       password_hash TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'Warehouse Staff'
                           CHECK(role IN ('Inventory Manager', 'Warehouse Staff')),
+      is_validated INTEGER DEFAULT 1,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS settings (
+      setting_key TEXT PRIMARY KEY,
+      setting_value TEXT NOT NULL
     )
   `);
 

@@ -3,3 +3,4 @@ data/
 dist/
 *.db
 .DS_Store
+server.log  

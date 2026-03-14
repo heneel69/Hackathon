@@ -11,7 +11,62 @@
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
-  <div id="app">
+  <!-- AUTH PAGE OVERLAY -->
+  <div id="auth-page" style="display: none;">
+    <div class="auth-container">
+      <div class="auth-brand">
+        <span class="material-icons-outlined brand-icon" style="font-size: 48px;">warehouse</span>
+        <h2>IMS Login</h2>
+        <p>Access the Inventory Management System</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="login-email" class="form-input" required placeholder="admin@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="login-password" class="form-input" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;">Sign In</button>
+        <div class="auth-links">
+          <a href="#" id="show-register">Create an account</a>
+          <a href="#" id="show-forgot">Forgot Password?</a>
+        </div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" style="display: none;">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="req-name" class="form-input" required placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="req-email" class="form-input" required placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="req-password" class="form-input" required placeholder="••••••••">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <select id="req-role" class="form-select">
+            <option value="Warehouse Staff">Warehouse Staff</option>
+            <option value="Inventory Manager">Inventory Manager</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;">Create Account</button>
+        <div class="auth-links">
+          <a href="#" id="show-login">Back to Sign In</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="app" style="display: none;">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
         <span class="material-icons-outlined brand-icon">warehouse</span>
@@ -65,12 +120,13 @@
           <span>Settings</span>
         </a>
       </nav>
-      <div class="sidebar-user">
+      <div class="sidebar-user" style="cursor: pointer;" onclick="window.logout()" title="Logout">
         <div class="user-avatar">AR</div>
         <div>
           <p class="user-name">Alex Rivera</p>
           <p class="user-role">Admin</p>
         </div>
+        <span class="material-icons-outlined" style="margin-left:auto; color:var(--text-muted)">logout</span>
       </div>
     </aside>
     <main class="main-content" id="main-content">
