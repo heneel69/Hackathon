@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IMS — Inventory Dashboard</title>
+    <meta name="description" content="Inventory Management System — Dashboard" />
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+    <div class="app-shell">
+        <!-- ── LEFT SIDEBAR ────────────────────────────────────── -->
+        <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">📦</div>
+                    <div class="logo-text">
+                        InvMS
+                        <span class="sub">Management System</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Main</div>
+                <a href="/dashboard" class="nav-item active" id="nav-dashboard">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-inventory">
+                    <span class="nav-icon">📋</span>
+                    <span>Inventory</span>
+                    <span class="nav-badge">42</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-orders">
+                    <span class="nav-icon">🛒</span>
+                    <span>Orders</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-suppliers">
+                    <span class="nav-icon">🏭</span>
+                    <span>Suppliers</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-reports">
+                    <span class="nav-icon">📊</span>
+                    <span>Reports</span>
+                </a>
+
+                <div class="nav-section-title">Settings</div>
+                <a href="#" class="nav-item" id="nav-settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <!-- ── PROFILE MENU ────────────────────────────────── -->
+            <div class="profile-menu" id="profileMenuSection">
+                <!-- Dropdown appears above the trigger -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="/profile" class="profile-dropdown-item" id="myProfileLink">
+                        <span class="item-icon">👤</span>
+                        <span>My Profile</span>
+                    </a>
+                    <div class="profile-dropdown-item danger" id="logoutBtn">
+                        <span class="item-icon">🚪</span>
+                        <span>Logout</span>
+                    </div>
+                </div>
+                <div class="profile-menu-btn" id="profileMenuBtn" role="button" aria-haspopup="true"
+                    aria-expanded="false">
+                    <div class="profile-avatar" id="sidebarAvatar">?</div>
+                    <div class="profile-info">
+                        <div class="profile-name" id="sidebarName">Loading…</div>
+                        <div class="profile-role" id="sidebarRole"></div>
+                    </div>
+                    <span class="profile-caret">▲</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ── MAIN CONTENT ───────────────────────────────────── -->
+        <main class="main-content">
+            <div class="topbar">
+                <div>
+                    <div class="topbar-title">Inventory Dashboard</div>
+                    <div class="topbar-sub">Real-time overview of your inventory</div>
+                </div>
+                <div class="topbar-badge" id="roleBadge">Loading…</div>
+            </div>
+
+            <div class="content-area">
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-value">1,248</div>
+                        <div class="stat-label">Total Products</div>
+                        <div class="stat-change">↑ 12 this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-value">38</div>
+                        <div class="stat-label">Low Stock Alerts</div>
+                        <div class="stat-change" style="color:var(--warning)">Needs attention</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚚</div>
+                        <div class="stat-value">94</div>
+                        <div class="stat-label">Pending Orders</div>
+                        <div class="stat-change">↑ 8 today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏭</div>
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">Active Suppliers</div>
+                        <div class="stat-change" style="color:var(--success)">All operational</div>
+                    </div>
+                </div>
+
+                <!-- Recent Inventory Table -->
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <div class="section-card-title">Recent Inventory</div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SKU-0014</td>
+                                    <td>Industrial Gloves (L)</td>
+                                    <td>Safety Equipment</td>
+                                    <td>240</td>
+                                    <td><span class="badge in-stock">In Stock</span></td>
+                                    <td>Mar 13, 2026</td>
+                                </tr>
+                                <tr>
+                                    <td>SKU-0089</td>
+                                    <td>Cardboard Box 40×30</td>
+                                    <td>Packaging</td>
+                                    <td>18</td>
+                                    <td><span class="badge low-stock">Low Stock</span></td>
+                                    <td>Mar 13, 2026</td>
+                                </tr>
+                                <tr>
+                                    <td>SKU-0203</td>
+                                    <td>Label Printer Ribbon</td>
+                                    <td>Office Supplies</td>
+                                    <td>0</td>
+                                    <td><span class="badge out-stock">Out of Stock</span></td>
+                                    <td>Mar 12, 2026</td>
+                                </tr>
+                                <tr>
+                                    <td>SKU-0311</td>
+                                    <td>Pallet Jack 2T</td>
+                                    <td>Equipment</td>
+                                    <td>5</td>
+                                    <td><span class="badge in-stock">In Stock</span></td>
+                                    <td>Mar 11, 2026</td>
+                                </tr>
+                                <tr>
+                                    <td>SKU-0422</td>
+                                    <td>Stretch Wrap Film</td>
+                                    <td>Packaging</td>
+                                    <td>62</td>
+                                    <td><span class="badge in-stock">In Stock</span></td>
+                                    <td>Mar 10, 2026</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+
+</html>

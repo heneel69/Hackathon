@@ -5,6 +5,7 @@ import productsRouter from './routes/products.js';
 import categoriesRouter from './routes/categories.js';
 import warehousesRouter from './routes/warehouses.js';
 import alertsRouter from './routes/alerts.js';
+import authRouter from './auth.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,14 +21,17 @@ async function start() {
   app.use('/api/categories', categoriesRouter);
   app.use('/api/warehouses', warehousesRouter);
   app.use('/api/alerts', alertsRouter);
+  app.use('/api/auth', authRouter);
 
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
-  app.listen(PORT, () => {
-    console.log(`IMS API server running on http://localhost:${PORT}`);
-  });
+  if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+      console.log(`IMS API server running on http://localhost:${PORT}`);
+    });
+  }
 }
 
 start().catch(console.error);

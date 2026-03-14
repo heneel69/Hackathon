@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IMS — Forgot Password</title>
+    <meta name="description" content="Inventory Management System — Reset your password via OTP" />
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="logo-icon">🔑</div>
+                <div class="logo-text">Inv<span>MS</span></div>
+            </div>
+            <h1 class="auth-title">Forgot Password</h1>
+            <p class="auth-subtitle">Enter your email to receive a one-time password</p>
+
+            <div id="alert" class="alert"></div>
+
+            <form id="forgotForm" novalidate>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="you@company.com" required />
+                </div>
+                <button type="submit" class="btn" id="forgotBtn">Send OTP</button>
+            </form>
+
+            <p class="auth-link" style="margin-top:16px"><a href="/">← Back to Login</a></p>
+        </div>
+    </div>
+    <script src="/js/otp.js"></script>
+</body>
+
+</html>
