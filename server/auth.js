@@ -6,6 +6,7 @@ const router = express.Router();
 
 import { protect, JWT_SECRET } from './middleware.js';
 import { generateOtp, verifyOtp, markResetAllowed, isResetAllowed, clearResetAllowed } from './otp-store.js';
+import { sendOtpEmail } from './mailer.js';
 
 // ─── REGISTER ───────────────────────────────────────────────
 router.post('/register', async (req, res) => {
@@ -79,7 +80,7 @@ router.get('/me', protect, (req, res) => {
 });
 
 // ─── FORGOT PASSWORD ─────────────────────────────────────────
-router.post('/forgot-password', (req, res) => {
+router.post('/forgot-password', async (req, res) => {
     try {
         const { email } = req.body;
         if (!email) return res.status(400).json({ error: 'Email is required.' });
@@ -87,7 +88,13 @@ router.post('/forgot-password', (req, res) => {
         const user = queryOne('SELECT id FROM users WHERE email = ?', [email]);
         if (user) {
             const otp = generateOtp(email);
-            console.log(`\n[OTP MOCK] Password reset OTP for ${email}: ${otp}\n`);
+            // Send via Gmail (falls back to console log if env vars not set)
+            try {
+                await sendOtpEmail(email, otp);
+            } catch (mailErr) {
+                console.error('[MAILER] Failed to send email, falling back to console:', mailErr.message);
+                console.log(`\n[OTP FALLBACK] Password reset OTP for ${email}: ${otp}\n`);
+            }
         }
 
         return res.status(200).json({ message: 'If that email is registered, an OTP has been sent.' });
@@ -122,12 +129,43 @@ router.post('/reset-password', async (req, res) => {
         if (!user) return res.status(404).json({ error: 'User not found.' });
 
         const password_hash = await bcrypt.hash(newPassword, 12);
-        runSql('UPDATE users SET password_hash = ? WHERE email = ?', [password_hash, email]);
+        // Update password and clear any stale reset tokens
+        runSql('UPDATE users SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL WHERE email = ?', [password_hash, email]);
 
         clearResetAllowed(email);
         return res.status(200).json({ message: 'Password has been reset successfully.' });
     } catch (err) {
         console.error('[RESET ERROR]', err);
+        return res.status(500).json({ error: 'Internal server error.' });
+    }
+});
+
+// ─── UPDATE PASSWORD (Authenticated) ──────────────────────────
+router.put('/update-password', protect, async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ error: 'Current password and new password are required.' });
+        }
+        if (newPassword.length < 8) {
+            return res.status(400).json({ error: 'New password must be at least 8 characters.' });
+        }
+        if (currentPassword === newPassword) {
+            return res.status(400).json({ error: 'New password must be different from current password.' });
+        }
+
+        const user = queryOne('SELECT * FROM users WHERE id = ?', [req.user.id]);
+        if (!user) return res.status(404).json({ error: 'User not found.' });
+
+        const match = await bcrypt.compare(currentPassword, user.password_hash);
+        if (!match) return res.status(401).json({ error: 'Current password is incorrect.' });
+
+        const password_hash = await bcrypt.hash(newPassword, 12);
+        runSql('UPDATE users SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [password_hash, req.user.id]);
+
+        return res.status(200).json({ message: 'Password updated successfully. Please log in again.' });
+    } catch (err) {
+        console.error('[UPDATE_PASSWORD ERROR]', err);
         return res.status(500).json({ error: 'Internal server error.' });
     }
 });

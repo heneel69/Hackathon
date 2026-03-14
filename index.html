@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="IMS - Inventory Management System. Manage products, categories, warehouses and stock levels." />
-  <title>IMS — Inventory Management System</title>
+  <meta name="description" content="HAH Inventory. Manage products, categories, warehouses and stock levels." />
+  <title>HAH Inventory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
@@ -16,8 +16,8 @@
     <div class="auth-container">
       <div class="auth-brand">
         <span class="material-icons-outlined brand-icon" style="font-size: 48px;">warehouse</span>
-        <h2>IMS Login</h2>
-        <p>Access the Inventory Management System</p>
+        <h2>HAH Inventory Login</h2>
+        <p>Access the HAH Inventory System</p>
       </div>
 
       <!-- Login Form -->
@@ -63,6 +63,75 @@
           <a href="#" id="show-login">Back to Sign In</a>
         </div>
       </form>
+
+      <!-- Forgot Password Form (Step 1: Enter email) -->
+      <form id="forgot-form" style="display: none;">
+        <div class="auth-step-header">
+          <span class="material-icons-outlined" style="font-size:36px; color:var(--primary);">lock_reset</span>
+          <p style="margin:8px 0 4px; font-size:16px; font-weight:600;">Forgot your password?</p>
+          <p style="font-size:13px; color:var(--text-muted);">Enter your email to receive a one-time verification code.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="forgot-email" class="form-input" required placeholder="you@example.com">
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-send-otp" style="width:100%; justify-content:center; margin-top:8px;">Send OTP</button>
+        <div class="auth-links">
+          <a href="#" id="show-login-from-forgot">Back to Sign In</a>
+        </div>
+      </form>
+
+      <!-- OTP Verification Form (Step 2: Enter OTP) -->
+      <form id="otp-form" style="display: none;">
+        <div class="auth-step-header">
+          <span class="material-icons-outlined" style="font-size:36px; color:var(--primary);">verified</span>
+          <p style="margin:8px 0 4px; font-size:16px; font-weight:600;">Check your email</p>
+          <p style="font-size:13px; color:var(--text-muted);">We've sent a 6-digit code. <br>For demo, check the <strong>server console</strong>.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">One-Time Code</label>
+          <input type="text" id="otp-input" class="form-input" required placeholder="e.g., 123456" maxlength="6"
+            style="letter-spacing: 8px; font-size: 22px; text-align: center; font-weight: 600;">
+        </div>
+        <div id="otp-timer" style="text-align:center; font-size:13px; color:var(--text-muted); margin-bottom:12px;">Expires in <strong id="otp-countdown">10:00</strong></div>
+        <button type="submit" class="btn btn-primary" id="btn-verify-otp" style="width:100%; justify-content:center;">Verify Code</button>
+        <div class="auth-links">
+          <a href="#" id="resend-otp">Resend code</a>
+          <a href="#" id="show-login-from-otp">Back to Sign In</a>
+        </div>
+      </form>
+
+      <!-- Reset Password Form (Step 3: New password) -->
+      <form id="reset-form" style="display: none;">
+        <div class="auth-step-header">
+          <span class="material-icons-outlined" style="font-size:36px; color:var(--success, #22c55e);">check_circle</span>
+          <p style="margin:8px 0 4px; font-size:16px; font-weight:600;">Set a new password</p>
+          <p style="font-size:13px; color:var(--text-muted);">Choose something strong and memorable.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <div style="position:relative;">
+            <input type="password" id="reset-password" class="form-input" required placeholder="Min. 8 characters" minlength="8">
+          </div>
+          <!-- Strength meter -->
+          <div style="margin-top:8px;">
+            <div style="height:4px; border-radius:4px; background:var(--border-color); overflow:hidden;">
+              <div id="pwd-strength-bar" style="height:100%; width:0%; transition:width 0.3s, background 0.3s; border-radius:4px;"></div>
+            </div>
+            <p id="pwd-strength-label" style="font-size:12px; color:var(--text-muted); margin-top:4px;"></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm New Password</label>
+          <input type="password" id="reset-password-confirm" class="form-input" required placeholder="Re-enter password">
+          <p id="pwd-match-msg" style="font-size:12px; margin-top:4px; display:none;"></p>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-reset-submit" disabled
+          style="width:100%; justify-content:center; margin-top:8px;">Reset Password</button>
+        <div class="auth-links">
+          <a href="#" id="show-login-from-reset">Back to Sign In</a>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -71,8 +140,8 @@
       <div class="sidebar-brand">
         <span class="material-icons-outlined brand-icon">warehouse</span>
         <div>
-          <h1 class="brand-title">IMS</h1>
-          <p class="brand-subtitle">Inventory System</p>
+          <h1 class="brand-title" style="font-size: 1.2rem;">HAH Inventory</h1>
+          <p class="brand-subtitle">System</p>
         </div>
       </div>
       <nav class="sidebar-nav" id="sidebar-nav">

@@ -18,6 +18,7 @@ export async function renderSettings(container) {
       <button class="tab" data-tab="warehouses">Warehouses</button>
       <button class="tab" data-tab="general">General</button>
       <button class="tab" data-tab="users">Users</button>
+      <button class="tab" data-tab="security">Security</button>
     </div>
     <div id="settings-content" style="margin-top: 20px;"></div>
   `;
@@ -47,6 +48,8 @@ function renderActiveTab(container) {
     renderGeneralTab(content);
   } else if (currentTab === 'users') {
     renderUsersTab(content);
+  } else if (currentTab === 'security') {
+    renderSecurityTab(content);
   }
 }
 
@@ -452,4 +455,152 @@ window.deleteUser = async (id) => {
 function esc(str) {
   if (!str) return '';
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ==========================================================
+// SECURITY TAB — Update Password
+// ==========================================================
+function renderSecurityTab(content) {
+  content.innerHTML = `
+    <div style="max-width:480px;">
+      <div style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:12px; padding:28px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+          <span class="material-icons-outlined" style="color:var(--primary); font-size:28px;">lock</span>
+          <div>
+            <h3 style="font-weight:600; margin-bottom:2px;">Change Password</h3>
+            <p style="font-size:13px; color:var(--text-muted);">Update your account password. You will be logged out after changing it.</p>
+          </div>
+        </div>
+        <form id="update-password-form">
+          <div class="form-group">
+            <label class="form-label">Current Password</label>
+            <input type="password" id="sec-current-pwd" class="form-input" required placeholder="Enter your current password">
+          </div>
+          <div class="form-group">
+            <label class="form-label">New Password</label>
+            <input type="password" id="sec-new-pwd" class="form-input" required placeholder="Min. 8 characters" minlength="8">
+            <!-- Strength bar -->
+            <div style="margin-top:8px;">
+              <div style="height:4px; border-radius:4px; background:var(--border-color); overflow:hidden;">
+                <div id="sec-strength-bar" style="height:100%; width:0%; transition:width 0.3s, background 0.3s; border-radius:4px;"></div>
+              </div>
+              <p id="sec-strength-label" style="font-size:12px; color:var(--text-muted); margin-top:4px;"></p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm New Password</label>
+            <input type="password" id="sec-confirm-pwd" class="form-input" required placeholder="Re-enter new password">
+            <p id="sec-match-msg" style="font-size:12px; margin-top:4px; display:none;"></p>
+          </div>
+          <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+            <button type="submit" id="btn-update-pwd" class="btn btn-primary" disabled>
+              <span class="material-icons-outlined" style="font-size:18px;">lock_reset</span>
+              Update Password
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:12px; padding:20px; margin-top:20px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span class="material-icons-outlined" style="color:var(--warning, #f59e0b); font-size:24px;">info</span>
+          <div>
+            <p style="font-size:13px; font-weight:600; margin-bottom:4px;">Password Security Tips</p>
+            <ul style="font-size:12px; color:var(--text-muted); padding-left:16px; margin:0; line-height:1.8;">
+              <li>Use at least 8 characters</li>
+              <li>Mix uppercase, lowercase, numbers &amp; symbols</li>
+              <li>Don't reuse passwords from other sites</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const newPwdInput    = document.getElementById('sec-new-pwd');
+  const confirmInput   = document.getElementById('sec-confirm-pwd');
+  const submitBtn      = document.getElementById('btn-update-pwd');
+  const strengthBar    = document.getElementById('sec-strength-bar');
+  const strengthLabel  = document.getElementById('sec-strength-label');
+  const matchMsg       = document.getElementById('sec-match-msg');
+
+  function checkForm() {
+    const pwd     = newPwdInput.value;
+    const confirm = confirmInput.value;
+
+    // Strength
+    const score  = _passwordStrength(pwd);
+    const levels = [
+      { label: '', width: '0%', color: 'transparent' },
+      { label: 'Weak',   width: '25%',  color: '#ef4444' },
+      { label: 'Fair',   width: '50%',  color: '#f97316' },
+      { label: 'Good',   width: '75%',  color: '#eab308' },
+      { label: 'Strong', width: '100%', color: '#22c55e' },
+    ];
+    const lv = levels[score];
+    strengthBar.style.width      = lv.width;
+    strengthBar.style.background = lv.color;
+    strengthLabel.textContent    = pwd.length > 0 ? lv.label : '';
+
+    // Match
+    const matches = pwd === confirm && confirm.length > 0;
+    if (confirm.length > 0) {
+      matchMsg.style.display = 'block';
+      matchMsg.textContent   = matches ? '✓ Passwords match' : '✗ Passwords do not match';
+      matchMsg.style.color   = matches ? '#22c55e' : '#ef4444';
+    } else {
+      matchMsg.style.display = 'none';
+    }
+
+    submitBtn.disabled = !(matches && pwd.length >= 8);
+  }
+
+  newPwdInput.addEventListener('input', checkForm);
+  confirmInput.addEventListener('input', checkForm);
+
+  document.getElementById('update-password-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById('sec-current-pwd').value;
+    const newPassword     = newPwdInput.value;
+    const token           = localStorage.getItem('token');
+
+    submitBtn.disabled    = true;
+    submitBtn.innerHTML   = '<span class="material-icons-outlined" style="font-size:18px;">hourglass_top</span> Updating…';
+
+    try {
+      const res  = await fetch('/api/auth/update-password', {
+        method:  'PUT',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        showToast('Password updated! Logging you out…', 'success');
+        setTimeout(() => window.logout(), 1500);
+      } else {
+        showToast(data.error || 'Update failed', 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="material-icons-outlined" style="font-size:18px;">lock_reset</span> Update Password';
+      }
+    } catch {
+      showToast('Network error', 'error');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span class="material-icons-outlined" style="font-size:18px;">lock_reset</span> Update Password';
+    }
+  });
+}
+
+// Simple password strength scorer for settings page (mirrors auth.js)
+function _passwordStrength(pwd) {
+  if (!pwd || pwd.length < 4) return 0;
+  let score = 0;
+  if (pwd.length >= 8)           score++;
+  if (/[A-Z]/.test(pwd))        score++;
+  if (/[0-9]/.test(pwd))        score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+  return Math.min(score, 4);
 }

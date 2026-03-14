@@ -29,6 +29,8 @@ async function getDb() {
 
   // Schema updates for existing databases
   try { db.run('ALTER TABLE users ADD COLUMN is_validated INTEGER DEFAULT 1'); } catch (e) { /* Ignore if it already exists */ }
+  try { db.run('ALTER TABLE users ADD COLUMN reset_token TEXT'); } catch (e) { /* Ignore if it already exists */ }
+  try { db.run('ALTER TABLE users ADD COLUMN reset_token_expires INTEGER'); } catch (e) { /* Ignore if it already exists */ }
 
   // Create tables
   db.run(`
