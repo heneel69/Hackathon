@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IMS — My Profile</title>
+    <meta name="description" content="Inventory Management System — View your profile" />
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+    <div class="app-shell">
+        <!-- ── LEFT SIDEBAR (same as dashboard) ──────────────── -->
+        <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">📦</div>
+                    <div class="logo-text">
+                        InvMS
+                        <span class="sub">Management System</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Main</div>
+                <a href="/dashboard" class="nav-item" id="nav-dashboard">
+                    <span class="nav-icon">🏠</span><span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item"><span class="nav-icon">📋</span><span>Inventory</span></a>
+                <a href="#" class="nav-item"><span class="nav-icon">🛒</span><span>Orders</span></a>
+                <a href="#" class="nav-item"><span class="nav-icon">🏭</span><span>Suppliers</span></a>
+                <a href="#" class="nav-item"><span class="nav-icon">📊</span><span>Reports</span></a>
+                <div class="nav-section-title">Settings</div>
+                <a href="#" class="nav-item active"><span class="nav-icon">👤</span><span>My Profile</span></a>
+            </nav>
+            <div class="profile-menu" id="profileMenuSection">
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="/profile" class="profile-dropdown-item" id="myProfileLink">
+                        <span class="item-icon">👤</span><span>My Profile</span>
+                    </a>
+                    <div class="profile-dropdown-item danger" id="logoutBtn">
+                        <span class="item-icon">🚪</span><span>Logout</span>
+                    </div>
+                </div>
+                <div class="profile-menu-btn" id="profileMenuBtn" role="button" aria-haspopup="true"
+                    aria-expanded="false">
+                    <div class="profile-avatar" id="sidebarAvatar">?</div>
+                    <div class="profile-info">
+                        <div class="profile-name" id="sidebarName">Loading…</div>
+                        <div class="profile-role" id="sidebarRole"></div>
+                    </div>
+                    <span class="profile-caret">▲</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ── MAIN CONTENT ───────────────────────────────────── -->
+        <main class="main-content">
+            <div class="topbar">
+                <div>
+                    <div class="topbar-title">My Profile</div>
+                    <div class="topbar-sub">View your account details</div>
+                </div>
+                <div class="topbar-badge" id="roleBadge">Loading…</div>
+            </div>
+            <div class="content-area">
+                <div class="profile-page" id="profilePage">
+                    <!-- Profile Header -->
+                    <div class="profile-header-card">
+                        <div class="profile-big-avatar" id="profileAvatar">?</div>
+                        <div class="profile-header-info">
+                            <div class="name" id="profileName">Loading…</div>
+                            <div><span class="role-badge" id="profileRoleBadge">—</span></div>
+                        </div>
+                    </div>
+                    <!-- Profile Details -->
+                    <div class="profile-details">
+                        <div class="detail-row">
+                            <div class="detail-label">Full Name</div>
+                            <div class="detail-value" id="detailName">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Email Address</div>
+                            <div class="detail-value" id="detailEmail">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Role</div>
+                            <div class="detail-value" id="detailRole">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Member Since</div>
+                            <div class="detail-value" id="detailCreated">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/js/dashboard.js"></script>
+</body>
+
+</html>

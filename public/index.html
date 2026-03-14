@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IMS — Login</title>
+  <meta name="description" content="Inventory Management System — Secure Login Portal"/>
+  <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon">📦</div>
+        <div class="logo-text">Inv<span>MS</span></div>
+      </div>
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-subtitle">Sign in to access the Inventory Dashboard</p>
+
+      <div id="alert" class="alert"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" required/>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required/>
+        </div>
+        <button type="submit" class="btn" id="loginBtn">Sign In</button>
+      </form>
+
+      <p class="auth-link"><a href="/forgot" id="forgotLink">Forgot your password?</a></p>
+      <p class="auth-link" style="margin-top:10px">Don't have an account? <a href="/signup" id="signupLink">Sign up</a></p>
+    </div>
+  </div>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IMS — Reset Password</title>
+    <meta name="description" content="Inventory Management System — Set a new password" />
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="logo-icon">🛡️</div>
+                <div class="logo-text">Inv<span>MS</span></div>
+            </div>
+            <h1 class="auth-title">Reset Password</h1>
+            <p class="auth-subtitle">Set your new account password</p>
+
+            <div id="alert" class="alert"></div>
+
+            <form id="resetForm" novalidate>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" placeholder="Min. 8 characters"
+                        autocomplete="new-password" required />
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••"
+                        required />
+                </div>
+                <button type="submit" class="btn" id="resetBtn">Reset Password</button>
+            </form>
+
+            <p class="auth-link" style="margin-top:16px"><a href="/">← Back to Login</a></p>
+        </div>
+    </div>
+    <script src="/js/otp.js"></script>
+</body>
+
+</html>
