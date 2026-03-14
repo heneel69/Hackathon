@@ -3,6 +3,10 @@ import { renderProducts } from './pages/products.js';
 import { renderCategories } from './pages/categories.js';
 import { renderAlerts } from './pages/alerts.js';
 import { renderSettings } from './pages/settings.js';
+import { renderReceipts } from './pages/receipts.js';
+import { renderDeliveries } from './pages/deliveries.js';
+import { renderTransfers } from './pages/transfers.js';
+import { renderAdjustments } from './pages/adjustments.js';
 
 const mainContent = document.getElementById('main-content');
 const navLinks = document.querySelectorAll('.nav-link');
@@ -12,6 +16,10 @@ const routes = {
   categories: renderCategories,
   alerts: renderAlerts,
   settings: renderSettings,
+  receipts: renderReceipts,
+  deliveries: renderDeliveries,
+  transfers: renderTransfers,
+  adjustments: renderAdjustments,
 };
 
 function navigate() {

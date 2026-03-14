@@ -5,6 +5,10 @@ import productsRouter from './routes/products.js';
 import categoriesRouter from './routes/categories.js';
 import warehousesRouter from './routes/warehouses.js';
 import alertsRouter from './routes/alerts.js';
+import receiptsRouter from './routes/receipts.js';
+import deliveriesRouter from './routes/deliveries.js';
+import transfersRouter from './routes/transfers.js';
+import adjustmentsRouter from './routes/adjustments.js';
 import authRouter from './auth.js';
 
 const app = express();
@@ -21,6 +25,10 @@ async function start() {
   app.use('/api/categories', categoriesRouter);
   app.use('/api/warehouses', warehousesRouter);
   app.use('/api/alerts', alertsRouter);
+  app.use('/api/receipts', receiptsRouter);
+  app.use('/api/deliveries', deliveriesRouter);
+  app.use('/api/transfers', transfersRouter);
+  app.use('/api/adjustments', adjustmentsRouter);
   app.use('/api/auth', authRouter);
 
   app.get('/api/health', (req, res) => {
