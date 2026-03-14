@@ -234,10 +234,17 @@ function runSql(sql, params = []) {
 // Add createDb mock for tests compatibility
 async function createDb(memory) {
   // force memory DB by setting process env before getDb
-  if (memory === ':memory:') {
+  if (memory && memory.startsWith(':memory:')) {
     process.env.NODE_ENV = 'test';
+    if (db) {
+      db.close();
+      db = null; // Forces a brand new SQL.Database() instance
+    }
   }
+  
+  // getDb will check if db is null and create a new one using initSqlJs
   await getDb();
+  
   return {
     prepare: (sql) => {
       return {
@@ -247,7 +254,12 @@ async function createDb(memory) {
       }
     },
     exec: (sql) => runSql(sql),
-    close: () => {}
+    close: () => {
+       if (db && process.env.NODE_ENV === 'test') {
+          db.close();
+          db = null;
+       }
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 // ===== IMS SPA Router & App Init =====
+import { renderDashboard } from './pages/dashboard.js';
 import { renderProducts } from './pages/products.js';
 import { renderCategories } from './pages/categories.js';
 import { renderAlerts } from './pages/alerts.js';
@@ -13,6 +14,7 @@ const mainContent = document.getElementById('main-content');
 const navLinks = document.querySelectorAll('.nav-link');
 
 const routes = {
+  dashboard: renderDashboard,
   products: renderProducts,
   categories: renderCategories,
   alerts: renderAlerts,
@@ -25,7 +27,7 @@ const routes = {
 };
 
 function navigate() {
-  const hash = window.location.hash.replace('#', '') || 'products';
+  const hash = window.location.hash.replace('#', '') || 'dashboard';
   const renderFn = routes[hash];
 
   // Update active nav
@@ -95,6 +97,6 @@ export function showToast(message, type = 'success') {
 // ===== Init =====
 window.addEventListener('hashchange', navigate);
 window.addEventListener('load', () => {
-  if (!window.location.hash) window.location.hash = '#products';
+  if (!window.location.hash) window.location.hash = '#dashboard';
   navigate();
 });

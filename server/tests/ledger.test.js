@@ -10,15 +10,16 @@ describe('Module 4: Stock Ledger Database Constraints', () => {
     before(async () => {
         db = await createDb(':memory:');
         
+        const timestamp = Date.now();
         // Setup initial data needed for foreign keys
-        db.exec("INSERT INTO categories (name) VALUES ('Ledger Test Cat')");
-        const catRes = db.prepare("SELECT id FROM categories WHERE name = 'Ledger Test Cat'").get();
+        db.exec(`INSERT INTO categories (name) VALUES ('Ledger Test Cat ${timestamp}')`);
+        const catRes = db.prepare(`SELECT id FROM categories WHERE name = 'Ledger Test Cat ${timestamp}'`).get();
         
-        db.exec(`INSERT INTO products (name, sku, category_id, unit_of_measure) VALUES ('Ledger Item', 'LEDG-1', ${catRes.id}, 'pcs')`);
-        productId = db.prepare("SELECT id FROM products WHERE sku = 'LEDG-1'").get().id;
+        db.exec(`INSERT INTO products (name, sku, category_id, unit_of_measure) VALUES ('Ledger Item', 'LEDG-1-${timestamp}', ${catRes.id}, 'pcs')`);
+        productId = db.prepare(`SELECT id FROM products WHERE sku = 'LEDG-1-${timestamp}'`).get().id;
         
-        db.exec("INSERT INTO users (name, email, password_hash, role) VALUES ('Ledger User', 'ledger@test.com', 'hash', 'Warehouse Staff')");
-        userId = db.prepare("SELECT id FROM users WHERE email = 'ledger@test.com'").get().id;
+        db.exec(`INSERT INTO users (name, email, password_hash, role) VALUES ('Ledger User', 'ledger${timestamp}@test.com', 'hash', 'Warehouse Staff')`);
+        userId = db.prepare(`SELECT id FROM users WHERE email = 'ledger${timestamp}@test.com'`).get().id;
     });
 
     after(() => {

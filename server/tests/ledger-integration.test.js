@@ -20,15 +20,21 @@ describe('Module 4: Ledger Integration Hooks', () => {
         
         db = await createDb(':memory:');
         
+        const timestamp = Date.now();
         // Setup base data
-        db.exec("INSERT INTO categories (name) VALUES ('Ledger Cat')");
-        db.exec("INSERT INTO products (name, sku, category_id, unit_of_measure, initial_stock) VALUES ('Test Item', 'TI-1', 1, 'pcs', 100)");
-        pId = 1;
-        db.exec("INSERT INTO warehouses (name) VALUES ('WH1'), ('WH2')");
-        wId1 = 1;
-        wId2 = 2;
-        db.exec("INSERT INTO users (name, email, password_hash, role) VALUES ('Tester', 'test@example.com', 'h', 'Warehouse Staff')");
-        uId = 1;
+        db.exec(`INSERT INTO categories (name) VALUES ('Ledger Cat ${timestamp}')`);
+        const catId = db.prepare(`SELECT id FROM categories WHERE name = 'Ledger Cat ${timestamp}'`).get().id;
+        
+        db.exec(`INSERT INTO products (name, sku, category_id, unit_of_measure, initial_stock) VALUES ('Test Item', 'TI-1-${timestamp}', ${catId}, 'pcs', 100)`);
+        pId = db.prepare(`SELECT id FROM products WHERE sku = 'TI-1-${timestamp}'`).get().id;
+        
+        db.exec(`INSERT INTO warehouses (name) VALUES ('WH1-${timestamp}'), ('WH2-${timestamp}')`);
+        wId1 = db.prepare(`SELECT id FROM warehouses WHERE name = 'WH1-${timestamp}'`).get().id;
+        wId2 = db.prepare(`SELECT id FROM warehouses WHERE name = 'WH2-${timestamp}'`).get().id;
+        
+        db.exec(`INSERT INTO users (name, email, password_hash, role) VALUES ('Tester', 'test${timestamp}@example.com', 'h', 'Warehouse Staff')`);
+        
+        uId = db.prepare(`SELECT id FROM users WHERE email = 'test${timestamp}@example.com'`).get().id;
 
         // Initialize warehouse stock
         db.exec(`INSERT INTO warehouse_stock (product_id, warehouse_id, quantity) VALUES (${pId}, ${wId1}, 50)`);
