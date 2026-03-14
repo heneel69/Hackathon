@@ -72,6 +72,20 @@ router.post('/', (req, res) => {
     runSql('UPDATE products SET initial_stock = initial_stock + ? WHERE id = ?',
       [diff, Number(product_id)]);
 
+    // Module 4: Add to Stock Ledger
+    if (diff !== 0) {
+      const userId = req.user ? req.user.id : null;
+      runSql(
+        `INSERT INTO stock_ledger 
+         (product_id, quantity_change, source_warehouse_id, dest_warehouse_id, operation_type, user_id)
+         VALUES (?, ?, ?, ?, 'Adjustment', ?)`,
+        [Number(product_id), diff,
+         diff < 0 ? Number(warehouse_id) : null, // If reducing, it's the source
+         diff > 0 ? Number(warehouse_id) : null, // If adding, it's the destination
+         userId]
+      );
+    }
+
     const adjustment = queryOne(
       `SELECT sa.*, p.name as product_name, p.sku, w.name as warehouse_name,
               (sa.new_quantity - sa.old_quantity) as diff

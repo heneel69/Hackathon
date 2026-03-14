@@ -154,6 +154,15 @@ router.post('/:id/validate', (req, res) => {
       );
       runSql('UPDATE products SET initial_stock = initial_stock - ? WHERE id = ?',
         [item.quantity, item.product_id]);
+
+      // Module 4: Add to Stock Ledger
+      const userId = req.user ? req.user.id : null;
+      runSql(
+        `INSERT INTO stock_ledger 
+         (product_id, quantity_change, source_warehouse_id, operation_type, user_id)
+         VALUES (?, ?, ?, 'Delivery', ?)`,
+        [item.product_id, -item.quantity, item.warehouse_id, userId]
+      );
     }
 
     // Mark as validated

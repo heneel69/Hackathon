@@ -168,6 +168,15 @@ router.post('/:id/validate', (req, res) => {
           [item.product_id, transfer.dest_warehouse_id, item.quantity]
         );
       }
+
+      // Module 4: Add to Stock Ledger
+      const userId = req.user ? req.user.id : null;
+      runSql(
+        `INSERT INTO stock_ledger 
+         (product_id, quantity_change, source_warehouse_id, dest_warehouse_id, operation_type, user_id)
+         VALUES (?, ?, ?, ?, 'Internal Transfer', ?)`,
+        [item.product_id, item.quantity, transfer.source_warehouse_id, transfer.dest_warehouse_id, userId]
+      );
     }
 
     // Mark validated

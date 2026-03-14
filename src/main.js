@@ -7,6 +7,7 @@ import { renderReceipts } from './pages/receipts.js';
 import { renderDeliveries } from './pages/deliveries.js';
 import { renderTransfers } from './pages/transfers.js';
 import { renderAdjustments } from './pages/adjustments.js';
+import { renderMoveHistory } from './pages/MoveHistory.js';
 
 const mainContent = document.getElementById('main-content');
 const navLinks = document.querySelectorAll('.nav-link');
@@ -20,6 +21,7 @@ const routes = {
   deliveries: renderDeliveries,
   transfers: renderTransfers,
   adjustments: renderAdjustments,
+  movehistory: renderMoveHistory,
 };
 
 function navigate() {

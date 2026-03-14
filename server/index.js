@@ -9,6 +9,7 @@ import receiptsRouter from './routes/receipts.js';
 import deliveriesRouter from './routes/deliveries.js';
 import transfersRouter from './routes/transfers.js';
 import adjustmentsRouter from './routes/adjustments.js';
+import ledgerRouter from './routes/ledger.js';
 import authRouter from './auth.js';
 
 const app = express();
@@ -29,6 +30,7 @@ async function start() {
   app.use('/api/deliveries', deliveriesRouter);
   app.use('/api/transfers', transfersRouter);
   app.use('/api/adjustments', adjustmentsRouter);
+  app.use('/api/ledger', ledgerRouter);
   app.use('/api/auth', authRouter);
 
   app.get('/api/health', (req, res) => {

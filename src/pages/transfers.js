@@ -146,6 +146,21 @@ async function openNewTransferModal() {
       </div>
     </form>
   `);
+
+  const sourceSelect = document.querySelector('select[name="source_warehouse_id"]');
+  const destSelect = document.querySelector('select[name="dest_warehouse_id"]');
+
+  sourceSelect.addEventListener('change', () => {
+    const selectedSource = sourceSelect.value;
+    Array.from(destSelect.options).forEach(opt => {
+      if (opt.value === '') return;
+      opt.disabled = (opt.value === selectedSource);
+    });
+    if (destSelect.value === selectedSource) {
+      destSelect.value = '';
+    }
+  });
+
   document.getElementById('transfer-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);

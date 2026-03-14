@@ -160,6 +160,39 @@ async function getDb() {
     )
   `);
 
+  // ===== Module 4: Move History & Logging (The Ledger) =====
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS stock_ledger (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_id INTEGER NOT NULL REFERENCES products(id),
+      quantity_change INTEGER NOT NULL,
+      source_warehouse_id INTEGER REFERENCES warehouses(id) ON DELETE SET NULL,
+      dest_warehouse_id INTEGER REFERENCES warehouses(id) ON DELETE SET NULL,
+      operation_type TEXT NOT NULL CHECK(operation_type IN ('Receipt', 'Delivery', 'Internal Transfer', 'Adjustment')),
+      user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  // Enforce Append-Only Log: Prevent Updates
+  db.run(`
+    CREATE TRIGGER IF NOT EXISTS prevent_stock_ledger_update
+    BEFORE UPDATE ON stock_ledger
+    BEGIN
+      SELECT RAISE(ABORT, 'Stock Ledger records are immutable and cannot be updated.');
+    END;
+  `);
+
+  // Enforce Append-Only Log: Prevent Deletes
+  db.run(`
+    CREATE TRIGGER IF NOT EXISTS prevent_stock_ledger_delete
+    BEFORE DELETE ON stock_ledger
+    BEGIN
+      SELECT RAISE(ABORT, 'Stock Ledger records are immutable and cannot be deleted.');
+    END;
+  `);
+
   saveDb();
   return db;
 }
