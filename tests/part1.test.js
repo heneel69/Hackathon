@@ -2,8 +2,8 @@
  * Part 1 Tests — User Schema & Role Management
  * Unit tests: password hashing, role assignment & retrieval
  */
-const bcrypt = require('bcryptjs');
-const { createDb } = require('../server/db');
+import bcrypt from 'bcryptjs';
+import { createDb } from '../server/db.js';
 
 let db;
 

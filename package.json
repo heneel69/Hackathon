@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"node server/index.js\" \"npx vite\"",
     "server": "node server/index.js",
-    "test": "node --test server/tests/*.test.js && jest --runInBand --forceExit --testTimeout=20000"
+    "test": "node --test server/tests/*.test.js && NODE_OPTIONS=--experimental-vm-modules jest --runInBand --forceExit --testTimeout=20000"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -25,7 +25,7 @@
     "testEnvironment": "node",
     "transform": {},
     "testMatch": [
-      "**/tests/**/*.test.js"
+      "<rootDir>/tests/**/*.test.js"
     ]
   }
 }

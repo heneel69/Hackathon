@@ -2,13 +2,13 @@
  * Part 2 Tests — Sign-up, Login & Redirection
  * Integration tests via supertest
  */
-const request = require('supertest');
-const jwt = require('jsonwebtoken');
-const express = require('express');
-const cors = require('cors');
-const { createDb } = require('../server/db');
-const { JWT_SECRET } = require('../server/middleware');
-const authRouter = require('../server/auth');
+import request from 'supertest';
+import jwt from 'jsonwebtoken';
+import express from 'express';
+import cors from 'cors';
+import { createDb } from '../server/db.js';
+import { JWT_SECRET } from '../server/middleware.js';
+import authRouter from '../server/auth.js';
 
 let app;
 

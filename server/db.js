@@ -5,8 +5,10 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dbDir = join(__dirname, '..', 'data');
-mkdirSync(dbDir, { recursive: true });
-const DB_PATH = join(dbDir, 'ims.db');
+if (process.env.NODE_ENV !== 'test') {
+  mkdirSync(dbDir, { recursive: true });
+}
+const DB_PATH = process.env.NODE_ENV === 'test' ? ':memory:' : join(dbDir, 'ims.db');
 
 let db;
 
@@ -15,7 +17,7 @@ async function getDb() {
 
   const SQL = await initSqlJs();
 
-  if (existsSync(DB_PATH)) {
+  if (DB_PATH !== ':memory:' && existsSync(DB_PATH)) {
     const fileBuffer = readFileSync(DB_PATH);
     db = new SQL.Database(fileBuffer);
   } else {
@@ -86,7 +88,7 @@ async function getDb() {
 }
 
 function saveDb() {
-  if (!db) return;
+  if (!db || DB_PATH === ':memory:') return;
   const data = db.export();
   const buffer = Buffer.from(data);
   writeFileSync(DB_PATH, buffer);
@@ -119,5 +121,25 @@ function runSql(sql, params = []) {
   return { changes, lastInsertRowid: lastId ? lastId.id : 0 };
 }
 
-export { getDb, queryAll, queryOne, runSql, saveDb, DB_PATH };
+// Add createDb mock for tests compatibility
+async function createDb(memory) {
+  // force memory DB by setting process env before getDb
+  if (memory === ':memory:') {
+    process.env.NODE_ENV = 'test';
+  }
+  await getDb();
+  return {
+    prepare: (sql) => {
+      return {
+        get: (...params) => queryOne(sql, params),
+        all: (...params) => queryAll(sql, params),
+        run: (...params) => runSql(sql, params),
+      }
+    },
+    exec: (sql) => runSql(sql),
+    close: () => {}
+  }
+}
+
+export { getDb, queryAll, queryOne, runSql, saveDb, DB_PATH, createDb };
 export default { getDb, queryAll, queryOne, runSql, saveDb };

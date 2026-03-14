@@ -2,13 +2,13 @@
  * Part 3 Tests — OTP-Based Password Reset
  * Unit, Integration, and Security tests
  */
-const request = require('supertest');
-const express = require('express');
-const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const { createDb } = require('../server/db');
-const { generateOtp, verifyOtp, _getStore } = require('../server/otp-store');
-const authRouter = require('../server/auth');
+import request from 'supertest';
+import express from 'express';
+import cors from 'cors';
+import bcrypt from 'bcryptjs';
+import { createDb } from '../server/db.js';
+import { generateOtp, verifyOtp, _getStore } from '../server/otp-store.js';
+import authRouter from '../server/auth.js';
 
 let app;
 const TEST_EMAIL = 'otp.user@test.com';

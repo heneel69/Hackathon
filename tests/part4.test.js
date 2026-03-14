@@ -2,16 +2,19 @@
  * Part 4 Tests — Profile Menu & Session Termination
  * UI structure, protected routes, logout security
  */
-const request = require('supertest');
-const express = require('express');
-const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
-const { createDb } = require('../server/db');
-const { JWT_SECRET } = require('../server/middleware');
-const authRouter = require('../server/auth');
+import request from 'supertest';
+import express from 'express';
+import cors from 'cors';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+import { createDb } from '../server/db.js';
+import { JWT_SECRET } from '../server/middleware.js';
+import authRouter from '../server/auth.js';
 
 let app;
 let validToken;
