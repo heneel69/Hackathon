@@ -1,0 +1,20 @@
+{
+  "name": "ims-product-warehouse",
+  "version": "1.0.0",
+  "description": "IMS Module 2: Product & Warehouse Management",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"node server/index.js\" \"npx vite\"",
+    "server": "node server/index.js",
+    "test": "node --test server/tests/*.test.js"
+  },
+  "dependencies": {
+    "sql.js": "^1.11.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "vite": "^6.0.0"
+  }
+}
